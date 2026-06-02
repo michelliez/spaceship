@@ -1,0 +1,12 @@
+[project]
+name = "spaceship"
+version = "0.1.0"
+description = "Kaggle dataset competition! Michelle's first model :D"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = []
+
+[dependency-groups]
+dev = [
+    "ipykernel>=7.2.0",
+]

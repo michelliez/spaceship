@@ -9,12 +9,10 @@ print(os.environ['KAGGLE_KEY'])
 import sys
 import kagglehub
 
-#dataset_name = sys.argv[1]
-#path_name = sys.argv[2]
+dataset_name = sys.argv[1]
+dataset = kagglehub.competition_download(dataset_name) 
+    #spaceship-titanic
 
-dataset = kagglehub.competition_download('spaceship-titanic') 
-    #competitions/spaceship-titanic train.csv
-    
 # print (dataset)
 # print(os.listdir(dataset))
 

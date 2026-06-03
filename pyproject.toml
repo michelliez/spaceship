@@ -1,7 +1,7 @@
 [project]
 name = "spaceship"
 version = "0.1.0"
-description = "Kaggle dataset competition! Michelle's first model :D"
+description = "Kaggle Spaceship Titanic Competition"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [

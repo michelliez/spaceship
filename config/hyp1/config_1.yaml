@@ -1,0 +1,14 @@
+dataset: 
+  comp_dataset: spaceship-titanic
+  train_path: "/Users/michellezhou/.cache/kagglehub/competitions/spaceship-titanic/train.csv"
+  test_path: "/Users/michellezhou/.cache/kagglehub/competitions/spaceship-titanic/test.csv"
+
+#model:
+  #type:
+
+#train_parameters:
+
+#optimizer: 
+  #name: Adam
+
+#outputs:

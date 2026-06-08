@@ -34,7 +34,6 @@ def train(cfg):
     #Predict
     X_test = test_df[features]
     predict = model.predict(X_test)
-    predict = model.predict(X_test)
     submission = pd.DataFrame({
         'PassengerId': test_df['PassengerId'],
         'Transported': predict.astype(bool)

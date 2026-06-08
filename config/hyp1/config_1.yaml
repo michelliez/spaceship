@@ -6,8 +6,14 @@ dataset:
 #model:
   #type:
 
-#train_parameters:
+train_parameters:
+  test_size: 0.2
+  state: 23
 
+hydra: 
+  job:
+    chdir: True
+    
 #optimizer: 
   #name: Adam
 

@@ -10,5 +10,11 @@ def dataset(handle: str) -> None:
     except Exception as e:
         print(f'Error downloading dataset: {e}')
 
+def load_train_df(cfg):
+    return pd.read_csv(cfg.dataset.train_path)
+
+def load_test_df(cfg):
+    return pd.read_csv(cfg.dataset.test_path)
+
 
 dataset('spaceship-titanic')

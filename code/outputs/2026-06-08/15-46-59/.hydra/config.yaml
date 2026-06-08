@@ -1,7 +1,0 @@
-dataset:
-  comp_dataset: spaceship-titanic
-  train_path: /Users/michellezhou/.cache/kagglehub/competitions/spaceship-titanic/train.csv
-  test_path: /Users/michellezhou/.cache/kagglehub/competitions/spaceship-titanic/test.csv
-train_parameters:
-  test_size: 0.2
-  state: 23

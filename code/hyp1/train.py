@@ -1,45 +1,47 @@
-#Hypothesis 1: HomePlanet, CryoSleep, Cabin, Destination, Age, VIP affect transportation.
-#Drop data with missing values.
-
 import hydra
 import pandas as pd
-import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import OneHotEncoder, StandardScaler
-from sklearn.impute import SimpleImputer
-
-from utils.train_utils import dataset, load_test_df, load_train_df
+from sklearn.metrics import accuracy_score
+from utils.train_utils import load_train_df, load_test_df
+from hyp1.preprocessing import add_features, features
+from hyp1.model import build_model
 
 @hydra.main(version_base=None, config_path="../../config/hyp1", config_name='config_1')
 def train(cfg):
-
     #Pandas DF
     train_df=load_train_df(cfg)
-
-    #Prediction target: Transported or not
-    y = train_df.Transported
-
-    #Features (as given by hypothesis): HomePlanet, CryoSleep, Cabin, Destination, Age, VIP
-    train_features = ['HomePlanet', 'CryoSleep', 'Cabin', 'Destination', 'Age', 'VIP']
+    test_df=load_test_df(cfg)
     
-    #drop row if it is missing data in desired columns
-    train_df = train_df.dropna(subset=train_features)
-    print(train_df.describe())
+    #Features
+    train_df, test_df = add_features(train_df, test_df)
 
-    X = train_df[train_features]
-    print(X.describe())
-    print(X.head())
+    #X and y
+    X = train_df[features]
+    y = train_df['Transported'].astype(int)
 
     #Split training data into train and valid
-    # train_X, val_X, train_y, val_y
-    # cols_with_missing = [col for col in train_df.columns if train_df[col].isnull().any()]
-    # reduced_
+    X_train, X_valid, y_train, y_valid = train_test_split(X, y, test_size=cfg.train_parameters.test_size, random_state=cfg.train_parameters.state)
 
+    #Model
+    model = build_model()
+    model.fit(X_train, y_train)
 
+    #Validate
+    y_hat = model.predict(X_valid)
+    acc = accuracy_score(y_valid, y_hat)
+    print('Accuracy on validation set: %.3f' %(acc*100))
 
-
-
+    #Predict
+    X_test = test_df[features]
+    predict = model.predict(X_test)
+    predict = model.predict(X_test)
+    submission = pd.DataFrame({
+        'PassengerId': test_df['PassengerId'],
+        'Transported': predict.astype(bool)
+    })
+    submission.to_csv('submission.csv', index=False)
 
 
 if __name__ == "__main__":
     train()
+

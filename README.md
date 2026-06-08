@@ -38,4 +38,15 @@ Overall, transportation could be selective impacted by how much a passenger spen
 
 # 2. Training
 ## 2.1 Pandas DataFrames 
-A pandas DataFrame was created for **train.csv** in `train.py`, which first returns a description of the DataFrame, and the first few rows. Run with `uv run -m hyp1.train` inside the **code** folder.  
+A pandas DataFrame was created for **train.csv** and **test.csv** in `train.py`. Features were added to the DataFrame based on features in `preprocessing.py`. 
+
+## 2.2 Baseline Model
+A baseline model was created `code/hyp1` with `code/hyp1/preprocessing.py`, `code/hyp1/model.py`, and `code/hyp1/train.py`. A Logistic Regression was used to predict transportation status. The test.csv was split into 80% training data and 20% validation data.   
+Run with `uv run -m hyp1.train` inside the **code** directory.  
+
+## 2.3 XGBoost Model (Best Accuracy)
+Out of **RandomForestClassifier**, **GradientBoostingClassifier**, **HistGradientBoostingClassifier**, and **XGBoostClassifier**, **XGBoostClassifier** yielded the highest accuracy. Features were tweaked in `code/hyp2/preprocessing.py`. The RepeatedStratifiedKFold cross-validiation method was used.  
+Run with 'uv run -m hyp2.train` inside the **code** directory.
+
+# 3. Kaggle Submission
+Results were submitted to the **Spaceship Titanic** Kaggle competition with an accuracy of **0.79822**.

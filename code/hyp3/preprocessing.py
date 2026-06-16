@@ -8,9 +8,6 @@ from sklearn.impute import SimpleImputer
 features = ['Age', 'CryoSleep', 'CabinDeck', 'CabinSide', 'CabinNumber', 'GroupSize', 'SoloTravel', 'CabinMissing', 'TotalSpending', 'SocioEconStatus', 'NoSpend', 'LuxurySpend', 'EssentialSpend', 'CryoNoSpend', 'Destination', 'HomePlanet', 'RoomService', 'FoodCourt', 'ShoppingMall', 'Spa', 'VRDeck', 'VIP']
 cont_cols=['Age', 'CabinNumber', 'GroupSize', 'RoomService', 'FoodCourt', 'ShoppingMall', 'Spa', 'VRDeck', 'TotalSpending',  'LuxurySpend', 'EssentialSpend']
 cat_cols=['Destination', 'HomePlanet', 'CryoSleep', 'VIP', 'CabinDeck', 'CabinSide', 'SocioEconStatus', 'NoSpend', 'CryoNoSpend', 'SoloTravel', 'CabinMissing']
-# features = ['Age', 'CryoSleep', 'CabinDeck', 'CabinSide', 'CabinNumber', 'PassengerGroup', 'TotalSpending', 'NoSpend', 'LuxurySpend', 'EssentialSpend', 'Destination', 'HomePlanet', 'RoomService', 'FoodCourt', 'ShoppingMall', 'Spa', 'VRDeck', 'VIP']
-# cont_cols=['Age', 'CabinNumber', 'PassengerGroup', 'RoomService', 'FoodCourt', 'ShoppingMall', 'Spa', 'VRDeck', 'TotalSpending', 'NoSpend', 'LuxurySpend', 'EssentialSpend']
-# cat_cols=['Destination', 'HomePlanet', 'CryoSleep', 'VIP', 'CabinDeck', 'CabinSide']
 
 def add_features (train_df, test_df):
     train_df['CabinDeck'] = train_df['Cabin'].str.split('/').str[0]
@@ -76,12 +73,11 @@ def add_spending (train_df, test_df):
     return train_df, test_df
 
 
+
 def get_preprocessor():
     cont_pipeline = Pipeline([
         ('imputer', SimpleImputer(strategy='median')),
-        # ('winsor', Winsorizer(capping_method='iqr', tail='both', fold=1.5)),
         ('normalizer', StandardScaler())
-        # ('normalizer', Normalizer())
     ])
     cat_pipeline = Pipeline([
         ('imputer', SimpleImputer(strategy = 'most_frequent')),

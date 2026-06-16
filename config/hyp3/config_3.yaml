@@ -3,9 +3,15 @@ dataset:
   train_path: "/Users/michellezhou/.cache/kagglehub/competitions/spaceship-titanic/train.csv"
   test_path: "/Users/michellezhou/.cache/kagglehub/competitions/spaceship-titanic/test.csv"
 
+model:
+  batch: 64
+  iters: 1000
+  epochs: 20
+  lr: 0.001
+
 train_parameters:
   test_size: 0.2
-  state: 7
+  state: 23
 
 hydra: 
   job:

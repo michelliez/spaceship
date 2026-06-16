@@ -1,12 +1,12 @@
 import hydra
 import pandas as pd
-from sklearn.model_selection import train_test_split, RepeatedStratifiedKFold, cross_val_score
+from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 from utils.train_utils import load_train_df, load_test_df
-from hyp2.preprocessing import add_features, add_spending, features, predict_missing_values, get_preprocessor
-from hyp2.model import build_model
+from hyp4.preprocessing import add_features, add_spending, features, predict_missing_values, get_preprocessor
+from hyp4.model import build_model
 
-@hydra.main(version_base=None, config_path="../../config/hyp2", config_name='config_2')
+@hydra.main(version_base=None, config_path="../../config/hyp4", config_name='config_4')
 def train(cfg):
     #Pandas DF
     train_df=load_train_df(cfg)
@@ -25,9 +25,6 @@ def train(cfg):
     #X and y
     X = train_df[features]
     y = train_df['Transported'].astype(int)
-
-    # #CV
-    # cross_valid = RepeatedStratifiedKFold(n_splits=5, n_repeats=1, random_state=42)
    
     #Split training data into train and valid
     X_train, X_valid, y_train, y_valid = train_test_split(X, y, test_size=cfg.train_parameters.test_size, random_state=cfg.train_parameters.state)
@@ -36,25 +33,12 @@ def train(cfg):
     X_test = test_df[features]
 
     #Normalizing
-    preprocessor = get_preprocessor()
-    # #Normalize on just training data
-    # X_train = preprocessor.fit_transform(X_train)
-    # X_valid = preprocessor.transform(X_valid)
-    # X_test = preprocessor.transform(X_test)
-    #Normalize on test and training data
-    all_data = pd.concat([X_train, X_test])
-    preprocessor.fit(all_data)
-    X_train = preprocessor.transform(X_train)
-    X_valid = preprocessor.transform(X_valid)
-    X_test = preprocessor.transform(X_test)
+    X_train, X_valid, X_test = get_preprocessor(X_train, X_valid, X_test)
 
     #Model
     model = build_model()
-    # scores = cross_val_score(model, X, y, cv = cross_valid, scoring='accuracy')
-    # print(f"CV accuracy: {scores.mean() * 100:.3f}%")
-    # model.fit(X, y)
-
-    model.fit(X_train, y_train)
+    cat_cols = ['Destination', 'HomePlanet', 'CryoSleep', 'VIP', 'CabinDeck', 'CabinSide', 'SocioEconStatus']
+    model.fit(X_train, y_train, cat_features = cat_cols, eval_set=(X_valid, y_valid), use_best_model=True)
     y_hat = model.predict(X_valid)
     acc = accuracy_score(y_valid, y_hat)
     print('Accuracy on validation set: %.5f' %(acc*100))

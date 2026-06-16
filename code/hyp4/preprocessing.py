@@ -1,16 +1,8 @@
 import pandas as pd
-from sklearn.compose import ColumnTransformer
-from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import OneHotEncoder, StandardScaler, OrdinalEncoder, Normalizer
-from feature_engine.outliers import Winsorizer
-from sklearn.impute import SimpleImputer
 
 features = ['Age', 'CryoSleep', 'CabinDeck', 'CabinSide', 'CabinNumber', 'GroupSize', 'SoloTravel', 'CabinMissing', 'TotalSpending', 'SocioEconStatus', 'NoSpend', 'LuxurySpend', 'EssentialSpend', 'CryoNoSpend', 'Destination', 'HomePlanet', 'RoomService', 'FoodCourt', 'ShoppingMall', 'Spa', 'VRDeck', 'VIP']
 cont_cols=['Age', 'CabinNumber', 'GroupSize', 'RoomService', 'FoodCourt', 'ShoppingMall', 'Spa', 'VRDeck', 'TotalSpending',  'LuxurySpend', 'EssentialSpend']
 cat_cols=['Destination', 'HomePlanet', 'CryoSleep', 'VIP', 'CabinDeck', 'CabinSide', 'SocioEconStatus', 'NoSpend', 'CryoNoSpend', 'SoloTravel', 'CabinMissing']
-# features = ['Age', 'CryoSleep', 'CabinDeck', 'CabinSide', 'CabinNumber', 'PassengerGroup', 'TotalSpending', 'NoSpend', 'LuxurySpend', 'EssentialSpend', 'Destination', 'HomePlanet', 'RoomService', 'FoodCourt', 'ShoppingMall', 'Spa', 'VRDeck', 'VIP']
-# cont_cols=['Age', 'CabinNumber', 'PassengerGroup', 'RoomService', 'FoodCourt', 'ShoppingMall', 'Spa', 'VRDeck', 'TotalSpending', 'NoSpend', 'LuxurySpend', 'EssentialSpend']
-# cat_cols=['Destination', 'HomePlanet', 'CryoSleep', 'VIP', 'CabinDeck', 'CabinSide']
 
 def add_features (train_df, test_df):
     train_df['CabinDeck'] = train_df['Cabin'].str.split('/').str[0]
@@ -54,9 +46,8 @@ def predict_missing_values(data):
 
     #Anyone who spends is not asleep
     data.loc[data['CryoSleep'].isna() & ((data['Spa']>0) | (data['RoomService']>0) | (data['FoodCourt']>0) | (data['VRDeck']>0) | (data['ShoppingMall']>0)), 'CryoSleep'] = False
-    
+       
     return data
-
 
 def add_spending (train_df, test_df):
     train_df['TotalSpending'] = (train_df['RoomService'] + train_df['FoodCourt'] + train_df['ShoppingMall'] + train_df['Spa'] + train_df['VRDeck'])
@@ -75,20 +66,17 @@ def add_spending (train_df, test_df):
 
     return train_df, test_df
 
+def get_preprocessor(X_train, X_valid, X_test):
+    for col in cont_cols:
+        median = X_train[col].median()
+        X_train[col] = X_train[col].fillna(median)
+        X_valid[col] = X_valid[col].fillna(median)
+        X_test[col] = X_test[col].fillna(median)
 
-def get_preprocessor():
-    cont_pipeline = Pipeline([
-        ('imputer', SimpleImputer(strategy='median')),
-        # ('winsor', Winsorizer(capping_method='iqr', tail='both', fold=1.5)),
-        ('normalizer', StandardScaler())
-        # ('normalizer', Normalizer())
-    ])
-    cat_pipeline = Pipeline([
-        ('imputer', SimpleImputer(strategy = 'most_frequent')),
-        ('encoder', OrdinalEncoder())
-    ])
-    preprocessor = ColumnTransformer([
-        ('cont', cont_pipeline, cont_cols),
-        ('cat', cat_pipeline, cat_cols)
-    ])
-    return preprocessor
+
+    for col in cat_cols:
+        X_train[col] = X_train[col].fillna('Missing')
+        X_valid[col] = X_valid[col].fillna('Missing')
+        X_test[col] = X_test[col].fillna('Missing')
+
+    return X_train, X_valid, X_test

@@ -3,9 +3,6 @@ dataset:
   train_path: "/Users/michellezhou/.cache/kagglehub/competitions/spaceship-titanic/train.csv"
   test_path: "/Users/michellezhou/.cache/kagglehub/competitions/spaceship-titanic/test.csv"
 
-#model:
-  #type:
-
 train_parameters:
   test_size: 0.2
   state: 23
@@ -13,8 +10,3 @@ train_parameters:
 hydra: 
   job:
     chdir: True
-    
-#optimizer: 
-  #name: Adam
-
-#outputs:

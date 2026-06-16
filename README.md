@@ -38,7 +38,7 @@ Overall, transportation could be selective impacted by how much a passenger spen
 
 
 # 2. Training
-## 2.1 DataFrames & Feature Engineering
+## 2.1 DataFrames
 Pandas DataFrames were created for **train.csv** and **test.csv** in `train.py`.   
 
 ## 2.2 Feature Engineering

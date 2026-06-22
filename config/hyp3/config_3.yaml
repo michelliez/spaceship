@@ -4,10 +4,10 @@ dataset:
   test_path: "/Users/michellezhou/.cache/kagglehub/competitions/spaceship-titanic/test.csv"
 
 model:
-  batch: 64
-  iters: 1000
+  batch: 128
+  iters: 1100
   epochs: 20
-  lr: 0.001
+  lr: 0.005
 
 train_parameters:
   test_size: 0.2

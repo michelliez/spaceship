@@ -37,7 +37,7 @@ EDA was conducted in a Jupyter notebook under **notebooks**, **eda1.ipynb**. The
 Overall, transportation could be selective impacted by how much a passenger spends, which may also explain why people who are frozen in CryoSleep are transported at higher rates. Those in similar spending ranges also move around the ship in close proximity, which could explain Destination/HomePlanet and cabin patterns.
 
 
-# 2. Training
+# 2. Data Preparation
 ## 2.1 DataFrames
 Pandas DataFrames were created for **train.csv** and **test.csv** in `train.py`.   
 
@@ -70,22 +70,32 @@ Based on EDA, missing data was imputed.
 - Anymore who spends money are not in CryoSleep, therefore imputed with False.
 - Remaining missing numerical values were imputed with the column's median, and missing categorical values were imputed with the mode (or left as 'Missing' for CatBoost)
 
-## 2.4 Baseline Logistic Regression Classification Model
+# 3. Models
+## 3.1 Baseline Logistic Regression Classification Model
 A baseline model was created `code/hyp1` with `code/hyp1/preprocessing.py`, `code/hyp1/model.py`, and `code/hyp1/train.py`. This model used basic feature engineering. A **Logistic Regression** was used to predict transportation status. The train.csv pandas DataFrame was split into 80% training data and 20% validation data using sklearn train-test-split.   
 Run with `uv run -m hyp1.train` inside the **code** directory.  
 
-## 2.5 Decision Trees - XGBoost
+## 3.2 Hyp 2: Decision Trees - XGBoost
 Out of **RandomForestClassifier**, **GradientBoostingClassifier**, **HistGradientBoostingClassifier**, and **XGBoostClassifier**, **XGBoostClassifier** yielded the highest accuracy. Features were improved in `code/hyp2/preprocessing.py`. See Section **2.2**. The **RepeatedStratifiedKFold** and **train_test_split** cross-validiation method was used (RepeatedStratifiedKFold is currently commented out. Please comment out sklearn's train_test_split and uncomment KFold to use). Additionally, data was imputed via the strategy mentioned in Section **2.3**, and **normalized** using StandardScaler.  
 Run with `uv run -m hyp2.train` inside the **code** directory.  
 Results were submitted to the **Spaceship Titanic** Kaggle competition with an accuracy of **0.80547**.
 
-## 2.6 Neural Network
+## 3.3 Neural Network
 A simple **Torch** neural network found in `code/hyp3` with activation function ReLU resulted in a lower Kaggle accuracy of **0.79635**. However, data was not embedded, likely resulting in a lower score than decision tree models. Further, neural networks are weaker for tabular data such as **Spaceship Titanic**, which decision trees can easily learn.  
 Run with `uv run -m hyp3.train` inside the **code** directory.  
 
-## 2.7 Decision Trees Cont. - CatBoost
+## 3.4 Decision Trees Cont. - CatBoost
 The CatBoostClassifier was chosen due to its permutation-driven algorithm to encode categorical features. Instead of imputing missing categorical values with the modes, missing values were left as 'Missing' to allow the model to encode for missing information. This model yielded the highest Kaggle competition accuracy at **0.80687** resulting in a rank of **602/2198**.
 Run with `uv run -m hyp4.train` inside the **code** directory.  
 
-# 3. Kaggle Submission
+## 3.5 Ensemble (XGBoost, LightGBM, CatBoost)
+An ensemble of XGBoost, LightGBM, and CatBoost was created for this competition. Results were submitted to Kaggle.
+
+## 3.6 TabNet
+TabNet was used due to its ability to handle tabular data. A simpler version of the feature engineering described in **2.2** was applied. Results were sumbitted to Kaggle resulting in an accuracy of **0.80851** and a rank of **442**.
+
+## 3.7 Ensemble (XGBoost, LightGBM, CatBoost, TabNet)
+Another ensemble was created with XGBoost, LightGBM, CatBoost, and TabNet. The TabNet model was trained separately in `code/hyp6/tabnet.py`, which saved probabilities in a NumPy array. This array was loaded in `code/hyp7/train.py` and averaged with the probabilities from XGBoost, LightGBM, and CatBoost. Results were submitted to Kaggle.
+
+# 4. Kaggle Submission
 Results were submitted to the **Spaceship Titanic** Kaggle competition.

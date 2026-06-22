@@ -4,7 +4,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
-from sklearn.model_selection import train_test_split, StratifiedKFold
+from sklearn.model_selection import train_test_split, StratifiedGroupKFold
 from utils.train_utils import load_train_df, load_test_df
 from hyp3.preprocessing import add_features, add_spending, features, predict_missing_values, get_preprocessor
 from hyp3.model import LogRegModel

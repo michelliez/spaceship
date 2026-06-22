@@ -108,7 +108,8 @@ This was my first ML project, in which I learned and applied:
 - Boosting
 - Neural Networks
 - Ensembles
-in different hypotheses to predict whether a passenger on the spaceship would be transported or not. 
+in different hypotheses to predict whether a passenger on the spaceship would be transported or not.  
+I also learned to use Hydra for configs and Kaggle API keys.
 
 ## 4.2 Challenges
 I had most difficulty coding the final ensemble with XGBoot, LightGBM, CatBoost, and TabNet. In an ensemble, TabNet would enter an infinite load. I debugged it separately in a Jupyter Notebook and found that if any Boosting import statements were present, this infinite load would occur. Thus, I ran TabNet in a separate process and stored the transport probabilities in a NumPy array. The probabilities were then averaged with the probabilities from the Boosting trees. 

@@ -9,32 +9,7 @@ features = ['Age', 'CryoSleep', 'CabinDeck', 'CabinSide', 'CabinNumber', 'GroupS
 cont_cols=['Age', 'CabinNumber', 'GroupSize', 'RoomService', 'FoodCourt', 'ShoppingMall', 'Spa', 'VRDeck', 'TotalSpending',  'LuxurySpend', 'EssentialSpend', 'FamilySize']
 cat_cols=['Destination', 'HomePlanet', 'CryoSleep', 'VIP', 'CabinDeck', 'CabinSide', 'NoSpend', 'SoloTravel']
 
-def engineer_features (train_df, test_df):
-    # full = pd.concat([train_df, test_df], ignore_index=True)
-    # #Group / ID
-    # group = full['PassengerId'].str.split('_', expand = True)
-    # full['PassengerGroup'] = pd.to_numeric(group[0], errors = 'coerce')
-    # full['GroupNumber'] = pd.to_numeric(group[1], errors = 'coerce')
-    # full['GroupSize'] = full.groupby('GroupId')['PassengerId'].transform('size').astype(int)
-    # full['Solo'] = (full['GroupSize']==1).astype(int)
-
-    # #Cabin
-    # full['CabinDeck'] = full['Cabin'].str.split('/').str[0]
-    # full['CabinNumber'] = pd.to_numeric(full['Cabin'].str.split('/').str[1])
-    # full['CabinSide'] = full['Cabin'].str.split('/').str[2]
-    # full['CabinNumParity'] = (full['CabinNumber']%2).fillna(-1).astype(int)
-    # full['CabinNumBucket'] = pd.cut(full['CabinNumber'], bins=10, labels=False, duplicates='drop').fillna(-1).astype(int)
-
-    # #Name / Family
-    # full['LastName'] = full.Name.str.split(' ').str[-1].fillna('Unknown')
-    # full['FamilySize'] = full['LastName'].map(full['LastName'].value_counts())
-    # full['SurnameGroupSize'] = full.groupby('LastName')['PassengerGroup'].transform('nunique').astype(int)
-    
-    # #Infer CryoSleep via Spending
-    # spend0 = full['RoomService', 'FoodCourt', 'ShoppingMall', 'Spa', 'VRDeck'].fillna(0).sum(axis=1)
-    # full.loc[full['CryoSleep'].isna() & (sp > 0), 'CryoSleep'] = False
-    # full.loc[full['CryoSleep'].isna() & (sp == 0), 'CryoSleep'] = True
-
+def add_features (train_df, test_df):
     train_df['CabinDeck'] = train_df['Cabin'].str.split('/').str[0]
     train_df['CabinNumParity'] = (train_df['CabinNumber']%2).fillna(-1).astype(int)
     train_df['CabinNumBucket'] = pd.cut(train_df['CabinNumber'], bins=10, labels=False, duplicates='drop').fillna(-1).astype(int)

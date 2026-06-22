@@ -75,7 +75,7 @@ Based on EDA, missing data was imputed.
 A baseline model was created `code/hyp1` with `code/hyp1/preprocessing.py`, `code/hyp1/model.py`, and `code/hyp1/train.py`. This model used basic feature engineering. A **Logistic Regression** was used to predict transportation status. The train.csv pandas DataFrame was split into 80% training data and 20% validation data using sklearn train-test-split.   
 Run with `uv run -m hyp1.train` inside the **code** directory.  
 
-## 3.2 Hyp 2: Decision Trees - XGBoost
+## 3.2 Decision Trees - XGBoost
 Out of **RandomForestClassifier**, **GradientBoostingClassifier**, **HistGradientBoostingClassifier**, and **XGBoostClassifier**, **XGBoostClassifier** yielded the highest accuracy. Features were improved in `code/hyp2/preprocessing.py`. See Section **2.2**. The **RepeatedStratifiedKFold** and **train_test_split** cross-validiation method was used (RepeatedStratifiedKFold is currently commented out. Please comment out sklearn's train_test_split and uncomment KFold to use). Additionally, data was imputed via the strategy mentioned in Section **2.3**, and **normalized** using StandardScaler.  
 Run with `uv run -m hyp2.train` inside the **code** directory.  
 Results were submitted to the **Spaceship Titanic** Kaggle competition with an accuracy of **0.80547**.
@@ -98,4 +98,20 @@ TabNet was used due to its ability to handle tabular data. A simpler version of 
 Another ensemble was created with XGBoost, LightGBM, CatBoost, and TabNet. The TabNet model was trained separately in `code/hyp6/tabnet.py`, which saved probabilities in a NumPy array. This array was loaded in `code/hyp7/train.py` and averaged with the probabilities from XGBoost, LightGBM, and CatBoost. Results were submitted to Kaggle.
 
 # 4. Kaggle Submission
-Results were submitted to the **Spaceship Titanic** Kaggle competition.
+Results were submitted to the **Spaceship Titanic** Kaggle competition.  
+
+## 4.1 Concepts Learned
+This was my first ML project, in which I learned and applied:
+- Decision Trees
+- Forests
+- Random Forests
+- Boosting
+- Neural Networks
+- Ensembles
+in different hypotheses to predict whether a passenger on the spaceship would be transported or not. 
+
+## 4.2 Challenges
+I had most difficulty coding the final ensemble with XGBoot, LightGBM, CatBoost, and TabNet. In an ensemble, TabNet would enter an infinite load. I debugged it separately in a Jupyter Notebook and found that if any Boosting import statements were present, this infinite load would occur. Thus, I ran TabNet in a separate process and stored the transport probabilities in a NumPy array. The probabilities were then averaged with the probabilities from the Boosting trees. 
+
+# 5. Summary
+For me, I found EDA to be the most helpful, as it allowed me to engineer features that increased my accuracy more than changing models. Further, changing my method of validation from one split to 5 80-20 splits by group yielded more accurate cross validation scores compared to the actual public leaderboard score.

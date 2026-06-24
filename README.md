@@ -70,7 +70,7 @@ Based on EDA, missing data was imputed.
 - Anymore who spends money are not in CryoSleep, therefore imputed with False.
 - Remaining missing numerical values were imputed with the column's median, and missing categorical values were imputed with the mode (or left as 'Missing' for CatBoost)
 
-# 3. Models
+# 3. Models, Validation, and Inference
 ## 3.1 Baseline Logistic Regression Classification Model
 A baseline model was created `code/hyp1` with `code/hyp1/preprocessing.py`, `code/hyp1/model.py`, and `code/hyp1/train.py`. This model used basic feature engineering. A **Logistic Regression** was used to predict transportation status. The train.csv pandas DataFrame was split into 80% training data and 20% validation data using sklearn train-test-split.   
 Run with `uv run -m hyp1.train` inside the **code** directory.  
